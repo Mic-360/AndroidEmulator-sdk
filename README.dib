@@ -1,0 +1,124 @@
+#!markdown
+
+# Android Emulator Setup in Windows without Android Studio | Flutter - Dev
+
+#!markdown
+
+### Android SDK Commandline Tools
+[Commandline Tools](https://developer.android.com/studio/#downloads:~:text=Command%20line%20tools%20only)
+
+Extract the file.
+
+Open PowerShell as Administrator and run:
+
+#!pwsh
+
+dism.exe /online /enable-feature /featurename:WindowsHypervisorPlatform /all /norestart
+
+#!markdown
+
+## Setting Up Environment Variables
+
+ANDROID_SDK_ROOT = C:\Users\{username}\.android\avd
+
+Path: 
+- C:\Users\{username}\.android\cmdline-tools\latest\bin
+- C:\Users\{username}\.android\avd\emulator
+- C:\Users\{username}\.android\avd\platforms
+- C:\Users\{username}\.android\avd\platform-tools
+
+JAVA_HOME = C:\Program Files\Java\"whatever your jdk-version"
+
+#!pwsh
+
+setx ANDROID_SDK_ROOT = C:\Users\{username}\.android\avd
+
+setx path C:\Users\{username}\.android\cmdline-tools\latest\bin /m
+setx path C:\Users\{username}\.android\avd\emulator /m
+setx path C:\Users\{username}\.android\avd\platforms /m
+setx path C:\Users\{username}\.android\avd\platform-tools /m
+
+setx JAVA_HOME=C:\Program Files\Java\"whatever your jdk-version"
+
+#!markdown
+
+#### Execute these below commands.
+
+Put that folder `cmdline-tools` inside "C:\Users\<Username>\.android\" as shown in Path Env. Variables
+
+- Note: if there's no latest folder inside `cmdline-tools` then create it and put 'bin & etc. inside it'
+
+- Any Tag mismatch error are there due to slow and unstable internet connection. Execute the code again.
+
+#!pwsh
+
+sdkmanager --update
+
+#!pwsh
+
+sdkmanager emulator
+
+#!pwsh
+
+sdkmanager "system-images;android-31;google_apis;x86_64"
+
+#!pwsh
+
+sdkmanager "extras;android;m2repository"
+
+#!pwsh
+
+sdkmanager "build-tools;28.0.3"
+
+#!pwsh
+
+sdkmanager "platforms;android-31"
+
+#!pwsh
+
+sdkmanager "platform-tools"
+
+#!pwsh
+
+sdkmanager --license
+
+#!markdown
+
+## How to use AvDs
+
+#### Creating.
+
+`avdmanager create avd -n {avd_name} --device {device_type} -k {system_image}`
+
+#### Deleting.
+
+`avdmanager delete avd -n {avd_name}`
+
+#### Running.
+
+`emulator -avd {avd_name}` or `emulator @{avd_name}`
+
+#!markdown
+
+## Flutter configuration
+
+#!pwsh
+
+flutter config --android-sdk C:\Users\<Username>\.android
+
+#!pwsh
+
+flutter doctor
+
+#!markdown
+
+If flutter doctor shows Android sdk version (something) then run the below command.
+    - it must be written below that  flutter doctor issue.
+
+#!pwsh
+
+flutter doctor --android-licenses
+
+#!markdown
+
+# Open VsCode and boom You have your Android device.
